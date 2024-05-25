@@ -1,0 +1,3 @@
+/Users/albertorodriguez/projects/QC/cmake-build-debug/CMakeFiles/QC.dir
+/Users/albertorodriguez/projects/QC/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/albertorodriguez/projects/QC/cmake-build-debug/CMakeFiles/rebuild_cache.dir
