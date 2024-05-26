@@ -1,5 +1,4 @@
-/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Applications/CLion.app/Contents/bin/ninja/mac/aarch64/ninja -G Ninja -S /Users/albertorodriguez/projects/QC -B /Users/albertorodriguez/projects/QC/cmake-build-debug
--- Found OpenCV: /usr/local (found version "4.10.0") 
--- Configuring done (0.1s)
--- Generating done (0.0s)
--- Build files have been written to: /Users/albertorodriguez/projects/QC/cmake-build-debug
+Cannot generate into /Users/albertorodriguez/projects/QC
+It was created with incompatible generator 'Unix Makefiles'
+
+Please either delete it manually or select another generation directory
