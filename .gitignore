@@ -4,3 +4,8 @@
 qctool
 .idea
 .vscode
+CMakeFiles/
+cmake-build-debug/
+CMakeCache.txt
+CMakeLists.txt
+cmake_install.cmake
