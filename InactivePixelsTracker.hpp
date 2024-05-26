@@ -14,7 +14,8 @@ public:
 private:
 	int m_start;
 	int m_end;
-	std::list<int> m_inactivePixels;
+//	std::list<int> m_inactivePixels;
+	std::list<std::pair<int, int>> m_inactivePixels;
 
 	bool hasLetterbox(const cv::Mat &frame, int threshold);
 	bool hasPillarbox(const cv::Mat &frame, int threshold);

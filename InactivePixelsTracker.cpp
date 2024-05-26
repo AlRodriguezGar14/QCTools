@@ -1,6 +1,8 @@
 #include "InactivePixelsTracker.hpp"
 #include <thread>
 #include <atomic>
+#include <utility>
+
 
 bool InactivePixelsTracker::hasLetterbox(const cv::Mat& frame, int threshold = 0) {
     cv::Mat binary;
@@ -64,6 +66,7 @@ bool InactivePixelsTracker::hasInactivePixels(const cv::Mat& frame, int threshol
     }
     return false;
 }
+
 void InactivePixelsTracker::recordInactivePixels(const cv::Mat& frame, const cv::VideoCapture& cap) {
     int currentFrame = cap.get(cv::CAP_PROP_POS_FRAMES);
 
@@ -71,11 +74,12 @@ void InactivePixelsTracker::recordInactivePixels(const cv::Mat& frame, const cv:
         if (m_start == -1)
             m_start = currentFrame;
         std::cout << "Inactive pixels at: " << currentFrame << std::endl;
-        m_inactivePixels.push_back(currentFrame);
+//        m_inactivePixels.push_back(currentFrame);
         m_end = currentFrame;
     }
-    else if (currentFrame == m_end + 1){
+    else if (currentFrame == m_end + 1 && m_start != -1){
         std::cout << "Letterboxing found between frames: " << m_start << " and " << m_end << std::endl;
+		m_inactivePixels.push_back(std::make_pair(m_start, m_end));
         m_start = -1;
         m_end = -1;
     }
