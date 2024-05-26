@@ -67,18 +67,22 @@ bool InactivePixelsTracker::hasInactivePixels(const cv::Mat& frame, int threshol
     return false;
 }
 
+void InactivePixelsTracker::printInactivePixels() {
+	for (auto& pair : m_inactivePixels)
+		std::cout << "Inactive pixels between: " << pair.first << " and " << pair.second << std::endl;
+}
+
 void InactivePixelsTracker::recordInactivePixels(const cv::Mat& frame, const cv::VideoCapture& cap) {
     int currentFrame = cap.get(cv::CAP_PROP_POS_FRAMES);
 
     if (hasInactivePixels(frame)) {
         if (m_start == -1)
             m_start = currentFrame;
-        std::cout << "Inactive pixels at: " << currentFrame << std::endl;
-//        m_inactivePixels.push_back(currentFrame);
+//        std::cout << "Inactive pixels at: " << currentFrame << std::endl;
         m_end = currentFrame;
     }
     else if (currentFrame == m_end + 1 && m_start != -1){
-        std::cout << "Letterboxing found between frames: " << m_start << " and " << m_end << std::endl;
+//        std::cout << "Letterboxing found between frames: " << m_start << " and " << m_end << std::endl;
 		m_inactivePixels.push_back(std::make_pair(m_start, m_end));
         m_start = -1;
         m_end = -1;

@@ -3,6 +3,24 @@
 #include <opencv2/opencv.hpp>
 #include "InactivePixelsTracker.hpp"
 
+void	printProgressBar(int curr, int total) {
+	float	progress = (float)curr / total;
+	int 	barWidth = 70;
+	int 	position = barWidth * progress;
+
+	std::cout << "[";
+	for (int i = 0; i != barWidth; i++) {
+		i <= position ? std::cout << "#" : std::cout << " ";
+	}
+	std::cout << "] " << curr << " / " << total << " | " << int(progress * 100) << "%";
+	if (curr != total)
+		std::cout << "\r";
+	else
+		std::cout << "\n";
+	std::cout.flush();
+
+}
+
 int main(int argc, char **argv) {
 
 	if (argc != 2) {
@@ -11,6 +29,9 @@ int main(int argc, char **argv) {
 	}
 
 	cv::VideoCapture cap(argv[1]);
+	int totalFrames = cap.get(cv::CAP_PROP_FRAME_COUNT);
+	int currFrame = 0;
+
 	std::string window_name = argv[1];
 	cv::namedWindow(window_name, cv::WINDOW_NORMAL);
 	InactivePixelsTracker ipt;
@@ -42,8 +63,9 @@ int main(int argc, char **argv) {
 //					break ;
 //			}
 
+		printProgressBar(currFrame++, totalFrames - 1);
 	}
-
+	ipt.printInactivePixels();
 	cv::destroyAllWindows();
 	return 0;
 }
