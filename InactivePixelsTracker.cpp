@@ -1,23 +1,36 @@
 #include "InactivePixelsTracker.hpp"
-
-bool InactivePixelsTracker::hasPillarbox(const cv::Mat& frame, int threshold = 0) {
-    for (int y = 0; y < frame.rows; y++) {
-        const uchar* row_ptr = frame.ptr<uchar>(y);
-        if (row_ptr[0] > threshold || row_ptr[frame.cols - 1] > threshold)
-            return false;
-    }
-    return true;
-}
+#include <thread>
+#include <atomic> // to access data from multiple threads. Similar to mutex but more efficient
 
 bool InactivePixelsTracker::hasLetterbox(const cv::Mat& frame, int threshold = 0) {
-    const uchar* top_row_ptr = frame.ptr<uchar>(0);
-    const uchar* bottom_row_ptr = frame.ptr<uchar>(frame.rows - 1);
-    for (int x = 0; x < frame.cols; x++) {
-        if (top_row_ptr[x] > threshold || bottom_row_ptr[x] > threshold)
-            return false;
-    }
-    return true;
+    std::atomic<bool> letterbox(false);
+    cv::parallel_for_(cv::Range(0, frame.cols), [&](const cv::Range& range) {
+        for (int x = range.start; x < range.end; x++) {
+            if (letterbox.load()) return;
+            if (*(frame.ptr<uchar>(0) + x) > threshold || *(frame.ptr<uchar>(frame.rows - 1) + x) > threshold) {
+                letterbox.store(true);
+                return;
+            }
+        }
+    });
+    return !letterbox.load(); // load() reads the value of the atomic variable
 }
+
+bool InactivePixelsTracker::hasPillarbox(const cv::Mat& frame, int threshold = 0) {
+    std::atomic<bool> pillarbox(false);
+    cv::parallel_for_(cv::Range(0, frame.rows), [&](const cv::Range& range) {
+        for (int y = range.start; y < range.end; y++) {
+            if (pillarbox.load()) return;
+            const uchar* row_ptr = frame.ptr<uchar>(y);
+            if (*(row_ptr) > threshold || *(row_ptr + frame.cols - 1) > threshold) {
+                pillarbox.store(true);
+                return;
+            }
+        }
+    });
+    return !pillarbox.load();
+}
+
 
 bool InactivePixelsTracker::hasInactivePixels(const cv::Mat& frame, int threshold = 0, int innerThreshold = 30) {
     cv::Mat gray;
@@ -26,9 +39,22 @@ bool InactivePixelsTracker::hasInactivePixels(const cv::Mat& frame, int threshol
     } else {
         gray = frame;
     }
-    cv::normalize(gray, gray, 0, 200, cv::NORM_MINMAX);
 
-    if (hasLetterbox(gray, threshold) || hasPillarbox(gray, threshold)) {
+    bool hasPillarboxResult, hasLetterboxResult;
+
+    // Launch hasPillarbox and hasLetterbox in separate threads
+    std::thread pillarboxThread([&]() {
+        hasPillarboxResult = hasPillarbox(gray, threshold);
+    });
+    std::thread letterboxThread([&]() {
+        hasLetterboxResult = hasLetterbox(gray, threshold);
+    });
+
+    // Wait for both threads to finish
+    pillarboxThread.join();
+    letterboxThread.join();
+
+    if (hasPillarboxResult || hasLetterboxResult) {
         cv::Scalar mean, stddev;
         cv::meanStdDev(gray, mean, stddev);
         if (mean[0] < innerThreshold && stddev[0] < innerThreshold) {
