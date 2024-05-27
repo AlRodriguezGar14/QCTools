@@ -3,6 +3,10 @@
 
 #include <vector>
 #include <opencv2/opencv.hpp>
+#include <atomic>
+#include <thread>
+
+enum class Side { TOP, BOTTOM, LEFT, RIGHT };
 
 class InactivePixelsTracker {
 public:
@@ -16,9 +20,8 @@ private:
 	int m_end;
 	std::list<std::pair<int, int>> m_inactivePixels;
 
-	bool hasLetterbox(const cv::Mat &frame, int threshold);
-	bool hasPillarbox(const cv::Mat &frame, int threshold);
-	bool hasInactivePixels(const cv::Mat &frame, int threshold, int innerThreshold);
+	bool hasInactiveSide(const cv::Mat &gray, Side side, int threshold = 0);
+	bool hasInactivePixels(const cv::Mat &frame, int threshold = 3, int innerThreshold = 30);
 };
 
 #endif

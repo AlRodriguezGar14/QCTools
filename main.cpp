@@ -38,6 +38,7 @@ int main(int argc, char **argv) {
 
 	int fps = cap.get(cv::CAP_PROP_FPS);
 	std::cout << "fps: " << fps << std::endl;
+//	cap.set(cv::CAP_PROP_POS_FRAMES, 89600);
 
 	while (true) {
 
@@ -52,7 +53,11 @@ int main(int argc, char **argv) {
 		ipt.recordInactivePixels(frame, cap);
 
 		// Display frame, pending to check if display or not in the input
-//		cv::imshow(window_name, frame);
+//		cv::Mat gray;
+//		cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
+//		cv::equalizeHist(gray, gray);
+//		cv::threshold(gray, gray, 3, 255, cv::THRESH_BINARY);
+//		cv::imshow(window_name, gray);
 //		char key = cv::waitKey(1);
 //		if (key == 27)
 //			break ;
