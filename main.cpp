@@ -2,6 +2,7 @@
 #include <string>
 #include <opencv2/opencv.hpp>
 #include "InactivePixelsTracker.hpp"
+#include "duplicateFramesTracker.hpp"
 
 void	printProgressBar(int curr, int total) {
 	float	progress = (float)curr / total;
@@ -35,10 +36,13 @@ int main(int argc, char **argv) {
 	std::string window_name = argv[1];
 	cv::namedWindow(window_name, cv::WINDOW_NORMAL);
 	InactivePixelsTracker ipt;
+	DuplicateFramesTracker dft;
 
 	int fps = cap.get(cv::CAP_PROP_FPS);
 	std::cout << "fps: " << fps << std::endl;
 //	cap.set(cv::CAP_PROP_POS_FRAMES, 89600);
+
+	cv::Mat previous;
 
 	while (true) {
 
@@ -49,8 +53,10 @@ int main(int argc, char **argv) {
 			break ;
 		}
 
+		// Find duplicate frames or freeze image
+		dft.recordDuplicateFrames(frame, previous, cap);
 		// Find inactive pixels, letterbox, and pillarbox
-		ipt.recordInactivePixels(frame, cap);
+//		ipt.recordInactivePixels(frame, cap);
 
 		// Display frame, pending to check if display or not in the input
 //		cv::Mat gray;
@@ -69,8 +75,12 @@ int main(int argc, char **argv) {
 //			}
 
 		printProgressBar(currFrame++, totalFrames - 1);
+		previous = frame;
 	}
-	ipt.printInactivePixels();
+
+//	ipt.printInactivePixels();
+	dft.printDuplicateFrames();
+	dft.printFreezeFrames();
 	cv::destroyAllWindows();
 	return 0;
 }

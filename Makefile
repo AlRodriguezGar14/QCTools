@@ -153,6 +153,30 @@ InactivePixelsTracker.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/InactivePixelsTracker.cpp.s
 .PHONY : InactivePixelsTracker.cpp.s
 
+duplicateFramesTracker.o: duplicateFramesTracker.cpp.o
+.PHONY : duplicateFramesTracker.o
+
+# target to build an object file
+duplicateFramesTracker.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/duplicateFramesTracker.cpp.o
+.PHONY : duplicateFramesTracker.cpp.o
+
+duplicateFramesTracker.i: duplicateFramesTracker.cpp.i
+.PHONY : duplicateFramesTracker.i
+
+# target to preprocess a source file
+duplicateFramesTracker.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/duplicateFramesTracker.cpp.i
+.PHONY : duplicateFramesTracker.cpp.i
+
+duplicateFramesTracker.s: duplicateFramesTracker.cpp.s
+.PHONY : duplicateFramesTracker.s
+
+# target to generate assembly for a file
+duplicateFramesTracker.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/duplicateFramesTracker.cpp.s
+.PHONY : duplicateFramesTracker.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -189,6 +213,9 @@ help:
 	@echo "... InactivePixelsTracker.o"
 	@echo "... InactivePixelsTracker.i"
 	@echo "... InactivePixelsTracker.s"
+	@echo "... duplicateFramesTracker.o"
+	@echo "... duplicateFramesTracker.i"
+	@echo "... duplicateFramesTracker.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
