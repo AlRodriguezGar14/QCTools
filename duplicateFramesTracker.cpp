@@ -7,7 +7,7 @@ int	getLuminanceDiff(cv::Mat current, cv::Mat previous) {
 	cv::cvtColor(current, ycrcbCurrent, cv::COLOR_BGR2YCrCb);
 	cv::cvtColor(previous, ycrcbPrevious, cv::COLOR_BGR2YCrCb);
 
-	// Split the YCrCb images into their channels. Luminance is 0
+	// Split the YCrCb images into their channels. Luminance is the 0th
 	std::vector<cv::Mat> channelsCurrent, channelsPrevious;
 	cv::split(ycrcbCurrent, channelsCurrent);
 	cv::split(ycrcbPrevious, channelsPrevious);
@@ -23,7 +23,7 @@ bool DuplicateFramesTracker::findDuplicates(cv::Mat current, cv::Mat previous) {
     if (previous.empty())
         return false;
 
-	int nonZeroThreshold = current.total() * 0.005; // 0.5% of the total pixels in the image
+	int nonZeroThreshold = current.total() * 0.005; // 0.5% of the total pixels in the image // TODO: Test is it's enough threshold
     cv::Mat diff;
     cv::absdiff(current, previous, diff);
     cv::cvtColor(diff, diff, cv::COLOR_BGR2GRAY);
@@ -56,7 +56,7 @@ bool checkTextFrame(cv::Mat current) {
 	cv::Mat gray, contrast;
 
 	cv::cvtColor(current, gray, cv::COLOR_BGR2GRAY);
-	cv::Laplacian(gray, contrast, CV_64F); // To catch high contrast edges (usually white text over black background qualifies)
+	cv::Laplacian(gray, contrast, CV_64F); // To catch high contrast edges (usually white text over black background qualifies) // TODO: Test it more
 	double contrastLevel = cv::mean(contrast)[0];
 	if (contrastLevel > 10.0)
 		return true;
@@ -69,7 +69,7 @@ void DuplicateFramesTracker::recordDuplicateFrames(const cv::Mat& current, const
         return;
 
 	cv::Scalar avgPixelIntensity = cv::mean(current);
-	const int uniqueFrameThreshold = 10;
+	const int uniqueFrameThreshold = 5;
 
 	if (checkBlackFrame(avgPixelIntensity)) {
 		m_start = -1;
@@ -104,6 +104,7 @@ void DuplicateFramesTracker::recordDuplicateFrames(const cv::Mat& current, const
 }
 
 void DuplicateFramesTracker::printDuplicateFrames() {
+	mergeDuplicateFramesRanges();
 	std::cout << "Duplicate frames: " << m_duplicateFrames.size() << std::endl;
 	for (auto &frame : m_duplicateFrames) {
 		std::cout << "From " << frame.first << " to " << frame.second << std::endl;
@@ -115,4 +116,26 @@ void DuplicateFramesTracker::printFreezeFrames() {
 	for (auto &frame : m_freezeFrames) {
 		std::cout << "From " << frame.first << " to " << frame.second << std::endl;
 	}
+}
+
+void DuplicateFramesTracker::mergeDuplicateFramesRanges() {
+
+    std::list<std::pair<int, int>> mergedFrames;
+	std::list<std::pair<int, int>>::iterator it = m_duplicateFrames.begin();
+
+    int start = it->first;
+    int end = it->second;
+	++it;
+    for (; it != m_duplicateFrames.end(); ++it) {
+        if (it->first - end < 24) { // 24 frames is 1 second. TODO: Use the frame rate to calculate this
+            end = it->second;
+        } else {
+            mergedFrames.push_back(std::make_pair(start, end));
+            start = it->first;
+            end = it->second;
+        }
+    }
+    mergedFrames.push_back(std::make_pair(start, end));
+
+    m_duplicateFrames = mergedFrames;
 }

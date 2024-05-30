@@ -11,6 +11,7 @@ public:
 	void recordDuplicateFrames(const cv::Mat& current, const cv::Mat& previous, const cv::VideoCapture& cap);
 	void printDuplicateFrames();
 	void printFreezeFrames();
+	void mergeDuplicateFramesRanges();
 
 private:
 	int m_start;
