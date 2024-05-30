@@ -31,19 +31,19 @@ int main(int argc, char **argv) {
 
 	cv::VideoCapture cap(argv[1]);
 	int totalFrames = cap.get(cv::CAP_PROP_FRAME_COUNT);
-	int currFrame = 0;
+	double fps = cap.get(cv::CAP_PROP_FPS);
+	std::cout << "fps: " << fps << std::endl;
+
 
 	std::string window_name = argv[1];
 	cv::namedWindow(window_name, cv::WINDOW_NORMAL);
-	InactivePixelsTracker ipt;
-	DuplicateFramesTracker dft;
+	InactivePixelsTracker ipt(fps);
+	DuplicateFramesTracker dft(fps);
 
-	int fps = cap.get(cv::CAP_PROP_FPS);
-	std::cout << "fps: " << fps << std::endl;
 //	cap.set(cv::CAP_PROP_POS_FRAMES, 89600);
 
 	cv::Mat previous;
-
+	int currFrame = 0;
 	while (true) {
 
 		cv::Mat frame;

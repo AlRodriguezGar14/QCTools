@@ -127,7 +127,7 @@ void DuplicateFramesTracker::mergeDuplicateFramesRanges() {
     int end = it->second;
 	++it;
     for (; it != m_duplicateFrames.end(); ++it) {
-        if (it->first - end < 24) { // 24 frames is 1 second. TODO: Use the frame rate to calculate this
+        if (it->first - end < floor(this->fps)) {
             end = it->second;
         } else {
             mergedFrames.push_back(std::make_pair(start, end));

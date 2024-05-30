@@ -6,7 +6,7 @@
 
 class DuplicateFramesTracker {
 public:
-	DuplicateFramesTracker() : m_start(-1), m_end(-1), uniqueFrameCount(0) {};
+	DuplicateFramesTracker(double fps) : m_start(-1), m_end(-1), uniqueFrameCount(0) {this->fps = fps; };
 
 	void recordDuplicateFrames(const cv::Mat& current, const cv::Mat& previous, const cv::VideoCapture& cap);
 	void printDuplicateFrames();
@@ -14,6 +14,7 @@ public:
 	void mergeDuplicateFramesRanges();
 
 private:
+	double fps;
 	int m_start;
 	int m_end;
 	int uniqueFrameCount;

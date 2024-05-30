@@ -10,12 +10,13 @@ enum class Side { TOP, BOTTOM, LEFT, RIGHT };
 
 class InactivePixelsTracker {
 public:
-	InactivePixelsTracker() : m_start(-1), m_end(-1) {};
+	InactivePixelsTracker(double fps) : m_start(-1), m_end(-1) {this->fps = fps; };
 
 	void recordInactivePixels(const cv::Mat &frame, const cv::VideoCapture &cap);
 	void printInactivePixels();
 
 private:
+	double fps;
 	int m_start;
 	int m_end;
 	std::list<std::pair<int, int>> m_inactivePixels;
