@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
 		// Find duplicate frames or freeze image
 		dft.recordDuplicateFrames(frame, previous, cap);
 		// Find inactive pixels, letterbox, and pillarbox
-//		ipt.recordInactivePixels(frame, cap);
+		ipt.recordInactivePixels(frame, cap);
 
 		// Display frame, pending to check if display or not in the input
 //		cv::Mat gray;
@@ -78,7 +78,7 @@ int main(int argc, char **argv) {
 		previous = frame;
 	}
 
-//	ipt.printInactivePixels();
+	ipt.printInactivePixels();
 	dft.printDuplicateFrames();
 	dft.printFreezeFrames();
 	cv::destroyAllWindows();

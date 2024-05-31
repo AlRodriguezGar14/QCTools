@@ -107,14 +107,14 @@ void DuplicateFramesTracker::printDuplicateFrames() {
 	mergeDuplicateFramesRanges();
 	std::cout << "Duplicate frames: " << m_duplicateFrames.size() << std::endl;
 	for (auto &frame : m_duplicateFrames) {
-		std::cout << "From " << frame.first << " to " << frame.second << std::endl;
+		std::cout << "From " << frameToTimecode(frame.first, this->fps) << " to " << frameToTimecode(frame.second, this->fps) << std::endl;
 	}
 }
 
 void DuplicateFramesTracker::printFreezeFrames() {
 	std::cout << "Freeze frames: " << m_freezeFrames.size() << std::endl;
 	for (auto &frame : m_freezeFrames) {
-		std::cout << "From " << frame.first << " to " << frame.second << std::endl;
+		std::cout << "From " << frameToTimecode(frame.first, this->fps) << " to " << frameToTimecode(frame.second, this->fps) << std::endl;
 	}
 }
 

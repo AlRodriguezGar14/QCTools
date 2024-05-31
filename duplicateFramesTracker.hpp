@@ -3,10 +3,11 @@
 
 #include <list>
 #include <opencv2/opencv.hpp>
+#include "Converter.hpp"
 
-class DuplicateFramesTracker {
+class DuplicateFramesTracker : public Converter {
 public:
-	DuplicateFramesTracker(double fps) : m_start(-1), m_end(-1), uniqueFrameCount(0) {this->fps = fps; };
+	DuplicateFramesTracker(double fps) : fps(fps), m_start(-1), m_end(-1), uniqueFrameCount(0) {};
 
 	void recordDuplicateFrames(const cv::Mat& current, const cv::Mat& previous, const cv::VideoCapture& cap);
 	void printDuplicateFrames();
