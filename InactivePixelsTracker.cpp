@@ -67,6 +67,6 @@ void InactivePixelsTracker::recordInactivePixels(const cv::Mat& frame, const cv:
     }
 }
 void InactivePixelsTracker::printInactivePixels() {
-    for (auto& pair : m_inactivePixels)
-        std::cout << "Inactive pixels between: " << pair.first << " and " << pair.second << std::endl;
+    for (std::pair<int, int> &frame : m_inactivePixels)
+        std::cout << "Inactive pixels between: " << frame.first << " and " << frame.second << std::endl;
 }

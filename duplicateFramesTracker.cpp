@@ -103,21 +103,6 @@ void DuplicateFramesTracker::recordDuplicateFrames(const cv::Mat& current, const
 	}
 }
 
-void DuplicateFramesTracker::printDuplicateFrames() {
-	mergeDuplicateFramesRanges();
-	std::cout << "Duplicate frames: " << m_duplicateFrames.size() << std::endl;
-	for (auto &frame : m_duplicateFrames) {
-		std::cout << "From " << frameToTimecode(frame.first, this->fps) << " to " << frameToTimecode(frame.second, this->fps) << std::endl;
-	}
-}
-
-void DuplicateFramesTracker::printFreezeFrames() {
-	std::cout << "Freeze frames: " << m_freezeFrames.size() << std::endl;
-	for (auto &frame : m_freezeFrames) {
-		std::cout << "From " << frameToTimecode(frame.first, this->fps) << " to " << frameToTimecode(frame.second, this->fps) << std::endl;
-	}
-}
-
 void DuplicateFramesTracker::mergeDuplicateFramesRanges() {
 
     std::list<std::pair<int, int>> mergedFrames;
@@ -135,7 +120,28 @@ void DuplicateFramesTracker::mergeDuplicateFramesRanges() {
             end = it->second;
         }
     }
-    mergedFrames.push_back(std::make_pair(start, end));
+	if (end > 1)
+    	mergedFrames.push_back(std::make_pair(start, end));
 
     m_duplicateFrames = mergedFrames;
+}
+
+void DuplicateFramesTracker::printDuplicateFrames() {
+	mergeDuplicateFramesRanges();
+
+	if (m_duplicateFrames.empty()) {
+		return;
+	}
+
+	std::cout << "Duplicate frames: " << m_duplicateFrames.size() << std::endl;
+	for (std::pair<int, int> &frame : m_duplicateFrames) {
+		std::cout << "From " << frameToTimecode(frame.first, this->fps) << " to " << frameToTimecode(frame.second, this->fps) << std::endl;
+	}
+}
+
+void DuplicateFramesTracker::printFreezeFrames() {
+	std::cout << "Freeze frames: " << m_freezeFrames.size() << std::endl;
+	for (std::pair<int, int> &frame : m_freezeFrames) {
+		std::cout << "From " << frameToTimecode(frame.first, this->fps) << " to " << frameToTimecode(frame.second, this->fps) << std::endl;
+	}
 }
