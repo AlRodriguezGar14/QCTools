@@ -103,43 +103,6 @@ void DuplicateFramesTracker::recordDuplicateFrames(const cv::Mat& current, const
 	}
 }
 
-void DuplicateFramesTracker::mergeDuplicateFramesRanges() {
-
-    std::list<std::pair<int, int>> mergedFrames;
-	std::list<std::pair<int, int>>::iterator it = m_duplicateFrames.begin();
-
-    int start = it->first;
-    int end = it->second;
-	++it;
-    for (; it != m_duplicateFrames.end(); ++it) {
-        if (it->first - end < floor(this->fps)) {
-            end = it->second;
-        } else {
-            mergedFrames.push_back(std::make_pair(start, end));
-            start = it->first;
-            end = it->second;
-        }
-    }
-	if (end > 1)
-    	mergedFrames.push_back(std::make_pair(start, end));
-
-    m_duplicateFrames = mergedFrames;
-}
-
-void DuplicateFramesTracker::printDuplicateFrames() {
-//	mergeDuplicateFramesRanges();
-	newMergeFrames();
-
-	if (m_duplicateFrames.empty()) {
-		return;
-	}
-
-	std::cout << "Duplicate frames: " << m_duplicateFrames.size() << std::endl;
-	for (std::pair<int, int> &frame : m_duplicateFrames) {
-		std::cout << "From " << frameToTimecode(frame.first, this->fps) << " to " << frameToTimecode(frame.second, this->fps) << std::endl;
-	}
-}
-
 void DuplicateFramesTracker::printFreezeFrames() {
 	std::cout << "Freeze frames: " << m_freezeFrames.size() << std::endl;
 	for (std::pair<int, int> &frame : m_freezeFrames) {
@@ -150,4 +113,3 @@ void DuplicateFramesTracker::printFreezeFrames() {
 void	DuplicateFramesTracker::appendDuplicateFrames(std::list<std::pair<int, int>> dpfs) {
 	this->m_duplicateFrames.insert(this->m_duplicateFrames.end(), dpfs.begin(), dpfs.end());
 }
-

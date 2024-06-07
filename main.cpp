@@ -64,8 +64,13 @@ int main(int argc, char **argv) {
 		dft.appendDuplicateFrames(std::get<1>(res).getDuplicateFrames());
 	}
 
+	ipt.mergeFrameRanges();
+	ipt.printInactivePixelsTimecodes();
+	dft.mergeFrameRanges();
+	dft.printDuplicateFramesTimecodes();
+
+	ipt.printInactivePixelsFrames();
 	dft.printDuplicateFrames();
-	ipt.printInactivePixels();
 
 	return 0;
 }

@@ -5,17 +5,22 @@
 #include <opencv2/opencv.hpp>
 #include <atomic>
 #include <thread>
+#include <list>
+#include "Converter.hpp"
+#include "FramesTracker.hpp"
 
 enum class Side { TOP, BOTTOM, LEFT, RIGHT };
 
-class InactivePixelsTracker {
+class InactivePixelsTracker : public FramesTracker {
 public:
 	InactivePixelsTracker(double fps) : m_start(-1), m_end(-1) {this->fps = fps; };
 
 	void recordInactivePixels(const cv::Mat &frame, const cv::VideoCapture &cap);
-	void printInactivePixels();
 	std::list<std::pair<int, int>> getInactivePixels() { return m_inactivePixels; };
 	void appendInactivePixels(std::list<std::pair<int, int>> ipfs);
+	void mergeFrameRanges() { mergeRanges(m_inactivePixels, fps); };
+	void printInactivePixelsTimecodes() { printTimecodes(m_inactivePixels, fps, "Inactive pixels: "); };
+	void printInactivePixelsFrames() { printFrames(m_inactivePixels, fps, "Inactive pixels: "); };
 
 private:
 	double fps;

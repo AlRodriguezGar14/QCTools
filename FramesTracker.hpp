@@ -2,13 +2,13 @@
 #define FRAMES_TRACKER_HPP
 
 #include <list>
+#include "Converter.hpp"
 
-class FramesTracker {
+class FramesTracker : public Converter {
 public:
-	void	mergeFrames(std::list<std::pair<int, int>> &toMerge, double fps);
-
-protected:
-	std::list<std::pair<int, int>> m_frames;
+	void	mergeRanges(std::list<std::pair<int, int>> &toMerge, double fps);
+	void	printTimecodes(std::list<std::pair<int, int>> frames, double fps, std::string message);
+	void	printFrames(std::list<std::pair<int, int>> frames, double fps, std::string message);
 
 };
 
