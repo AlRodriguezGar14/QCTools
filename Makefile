@@ -129,6 +129,30 @@ qctool/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/build
 .PHONY : qctool/fast
 
+FramesTracker.o: FramesTracker.cpp.o
+.PHONY : FramesTracker.o
+
+# target to build an object file
+FramesTracker.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/FramesTracker.cpp.o
+.PHONY : FramesTracker.cpp.o
+
+FramesTracker.i: FramesTracker.cpp.i
+.PHONY : FramesTracker.i
+
+# target to preprocess a source file
+FramesTracker.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/FramesTracker.cpp.i
+.PHONY : FramesTracker.cpp.i
+
+FramesTracker.s: FramesTracker.cpp.s
+.PHONY : FramesTracker.s
+
+# target to generate assembly for a file
+FramesTracker.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/FramesTracker.cpp.s
+.PHONY : FramesTracker.cpp.s
+
 InactivePixelsTracker.o: InactivePixelsTracker.cpp.o
 .PHONY : InactivePixelsTracker.o
 
@@ -234,6 +258,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... qctool"
+	@echo "... FramesTracker.o"
+	@echo "... FramesTracker.i"
+	@echo "... FramesTracker.s"
 	@echo "... InactivePixelsTracker.o"
 	@echo "... InactivePixelsTracker.i"
 	@echo "... InactivePixelsTracker.s"

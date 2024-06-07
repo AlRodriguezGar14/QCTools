@@ -4,8 +4,9 @@
 #include <list>
 #include <opencv2/opencv.hpp>
 #include "Converter.hpp"
+#include "FramesTracker.hpp"
 
-class DuplicateFramesTracker : public Converter {
+class DuplicateFramesTracker : public Converter, public FramesTracker {
 public:
 	DuplicateFramesTracker(double fps) : fps(fps), m_start(-1), m_end(-1), uniqueFrameCount(0) {};
 
@@ -13,6 +14,9 @@ public:
 	void printDuplicateFrames();
 	void printFreezeFrames();
 	void mergeDuplicateFramesRanges();
+	void newMergeFrames() { mergeFrames(m_duplicateFrames, fps); };
+	std::list<std::pair<int, int>> getDuplicateFrames() { return m_duplicateFrames; };
+	void appendDuplicateFrames(std::list<std::pair<int, int>> dpfs);
 
 private:
 	double fps;
@@ -24,5 +28,6 @@ private:
 	bool findDuplicates(cv::Mat current, cv::Mat previous);
 
 };
+
 
 #endif

@@ -26,8 +26,6 @@ std::tuple<InactivePixelsTracker, DuplicateFramesTracker> processSegment(std::st
 		previous = frame;
 	}
 
-	// ipt.printInactivePixels();
-	// dft.printDuplicateFrames();
 	return std::make_tuple(ipt, dft);
 }
 
@@ -46,6 +44,8 @@ int main(int argc, char **argv) {
 	std::cout << "title: " << argv[1] << std::endl;
 	std::cout << "Processing..." << std::endl;
 
+	DuplicateFramesTracker dft(fps);
+	InactivePixelsTracker ipt(fps);
 	int numberOfSegments = 4; // Update this to the number of threads to run
 
 
@@ -60,9 +60,12 @@ int main(int argc, char **argv) {
 	}
 	for (std::future<std::tuple<InactivePixelsTracker, DuplicateFramesTracker>> &fut : futures) {
 		std::tuple<InactivePixelsTracker, DuplicateFramesTracker> res = fut.get();
-		std::get<1>(res).printDuplicateFrames();
-		// TODO: Merge the results from the different segments with the corresponding classes
+		ipt.appendInactivePixels(std::get<0>(res).getInactivePixels());
+		dft.appendDuplicateFrames(std::get<1>(res).getDuplicateFrames());
 	}
+
+	dft.printDuplicateFrames();
+	ipt.printInactivePixels();
 
 	return 0;
 }

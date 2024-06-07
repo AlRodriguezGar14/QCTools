@@ -127,7 +127,8 @@ void DuplicateFramesTracker::mergeDuplicateFramesRanges() {
 }
 
 void DuplicateFramesTracker::printDuplicateFrames() {
-	mergeDuplicateFramesRanges();
+//	mergeDuplicateFramesRanges();
+	newMergeFrames();
 
 	if (m_duplicateFrames.empty()) {
 		return;
@@ -145,3 +146,8 @@ void DuplicateFramesTracker::printFreezeFrames() {
 		std::cout << "From " << frameToTimecode(frame.first, this->fps) << " to " << frameToTimecode(frame.second, this->fps) << std::endl;
 	}
 }
+
+void	DuplicateFramesTracker::appendDuplicateFrames(std::list<std::pair<int, int>> dpfs) {
+	this->m_duplicateFrames.insert(this->m_duplicateFrames.end(), dpfs.begin(), dpfs.end());
+}
+

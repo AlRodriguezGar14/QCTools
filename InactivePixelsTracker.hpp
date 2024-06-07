@@ -14,6 +14,8 @@ public:
 
 	void recordInactivePixels(const cv::Mat &frame, const cv::VideoCapture &cap);
 	void printInactivePixels();
+	std::list<std::pair<int, int>> getInactivePixels() { return m_inactivePixels; };
+	void appendInactivePixels(std::list<std::pair<int, int>> ipfs);
 
 private:
 	double fps;
