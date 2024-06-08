@@ -201,6 +201,30 @@ InactivePixelsTracker.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/InactivePixelsTracker.cpp.s
 .PHONY : InactivePixelsTracker.cpp.s
 
+ProgressTracker.o: ProgressTracker.cpp.o
+.PHONY : ProgressTracker.o
+
+# target to build an object file
+ProgressTracker.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/ProgressTracker.cpp.o
+.PHONY : ProgressTracker.cpp.o
+
+ProgressTracker.i: ProgressTracker.cpp.i
+.PHONY : ProgressTracker.i
+
+# target to preprocess a source file
+ProgressTracker.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/ProgressTracker.cpp.i
+.PHONY : ProgressTracker.cpp.i
+
+ProgressTracker.s: ProgressTracker.cpp.s
+.PHONY : ProgressTracker.s
+
+# target to generate assembly for a file
+ProgressTracker.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/ProgressTracker.cpp.s
+.PHONY : ProgressTracker.cpp.s
+
 converter.o: converter.cpp.o
 .PHONY : converter.o
 
@@ -291,6 +315,9 @@ help:
 	@echo "... InactivePixelsTracker.o"
 	@echo "... InactivePixelsTracker.i"
 	@echo "... InactivePixelsTracker.s"
+	@echo "... ProgressTracker.o"
+	@echo "... ProgressTracker.i"
+	@echo "... ProgressTracker.s"
 	@echo "... converter.o"
 	@echo "... converter.i"
 	@echo "... converter.s"

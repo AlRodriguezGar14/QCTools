@@ -9,7 +9,6 @@ public:
 	void	mergeRanges(std::list<std::pair<int, int>> &toMerge, double fps);
 	void	printTimecodes(std::list<std::pair<int, int>> frames, double fps, std::string message);
 	void	printFrames(std::list<std::pair<int, int>> frames, double fps, std::string message);
-
 };
 
 #endif
