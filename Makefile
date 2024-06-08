@@ -153,6 +153,30 @@ FramesTracker.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/FramesTracker.cpp.s
 .PHONY : FramesTracker.cpp.s
 
+HTML.o: HTML.cpp.o
+.PHONY : HTML.o
+
+# target to build an object file
+HTML.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/HTML.cpp.o
+.PHONY : HTML.cpp.o
+
+HTML.i: HTML.cpp.i
+.PHONY : HTML.i
+
+# target to preprocess a source file
+HTML.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/HTML.cpp.i
+.PHONY : HTML.cpp.i
+
+HTML.s: HTML.cpp.s
+.PHONY : HTML.s
+
+# target to generate assembly for a file
+HTML.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qctool.dir/build.make CMakeFiles/qctool.dir/HTML.cpp.s
+.PHONY : HTML.cpp.s
+
 InactivePixelsTracker.o: InactivePixelsTracker.cpp.o
 .PHONY : InactivePixelsTracker.o
 
@@ -261,6 +285,9 @@ help:
 	@echo "... FramesTracker.o"
 	@echo "... FramesTracker.i"
 	@echo "... FramesTracker.s"
+	@echo "... HTML.o"
+	@echo "... HTML.i"
+	@echo "... HTML.s"
 	@echo "... InactivePixelsTracker.o"
 	@echo "... InactivePixelsTracker.i"
 	@echo "... InactivePixelsTracker.s"

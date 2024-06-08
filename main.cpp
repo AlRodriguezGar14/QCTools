@@ -1,7 +1,10 @@
 #include <opencv2/opencv.hpp>
 #include <future>
+#include <fstream>
 #include "InactivePixelsTracker.hpp"
 #include "duplicateFramesTracker.hpp"
+#include "Converter.hpp"
+#include "HTML.hpp"
 
 std::tuple<InactivePixelsTracker, DuplicateFramesTracker> processSegment(std::string videoPath, int startFrame, int endFrame, double fps) {
 	cv::VideoCapture cap(videoPath);
@@ -46,6 +49,7 @@ int main(int argc, char **argv) {
 
 	DuplicateFramesTracker dft(fps);
 	InactivePixelsTracker ipt(fps);
+	HTML report("report", videoPath, fps);
 	int numberOfSegments = 4; // Update this to the number of threads to run
 
 
@@ -65,12 +69,11 @@ int main(int argc, char **argv) {
 	}
 
 	ipt.mergeFrameRanges();
-	ipt.printInactivePixelsTimecodes();
 	dft.mergeFrameRanges();
-	dft.printDuplicateFramesTimecodes();
-
-	ipt.printInactivePixelsFrames();
-	dft.printDuplicateFrames();
+	report.initHTML();
+	report.addButton(ipt.getInactivePixels(), "Inactive Pixels: ");
+	report.addButton(dft.getDuplicateFrames(), "Duplicate Frames: ");
+	report.closeHTML();
 
 	return 0;
 }
