@@ -30,7 +30,7 @@ std::tuple<InactivePixelsTracker, DuplicateFramesTracker> processSegment(std::st
 
         dft.recordDuplicateFrames(frame, previous, cap);
         ipt.recordInactivePixels(frame, cap);
-        previous = frame;
+        previous = frame.clone();
 		progressTracker->updateProgress(i - startFrame, endFrame - startFrame, threadId);
     }
 
