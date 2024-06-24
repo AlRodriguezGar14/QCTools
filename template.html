@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+<head>
+    <title>{{title}}</title>
+    <style>
+        body, html {height: 100%; margin: 0; padding: 0 2%; background-color: #052327; color: #B59E79;}
+        #video {width: 65%;}
+    </style>
+</head>
+<body>
+<h1>{{title}}</h1>
+<video id="video" controls>
+    <source src="{{videoPath}}" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+<p id="currentFrame"></p>
+<p>FPS: {{fps}}</p>
+<!--{{buttons}}-->
+<script>
+    var video = document.getElementById('video');
+    var currentFrameElement = document.getElementById('currentFrame');
+    var fps = {{fps}}
+
+    video.addEventListener('timeupdate', function() {
+        var currentFrame = Math.round(video.currentTime * fps);
+        currentFrameElement.textContent = 'Current Frame: ' + currentFrame;
+    });
+
+    var frameTime = 1 / fps;
+    document.addEventListener('keydown', function(event) {
+        switch (event.key) {
+            case ',':
+                video.currentTime = Math.max(video.currentTime - frameTime, 0);
+                break;
+            case '.':
+                video.currentTime = Math.min(video.currentTime + frameTime, video.duration);
+                break;
+        }
+    });
+
+    function seek(frame) {
+        event.preventDefault();
+        video.currentTime = (frame + 1) / fps;
+        video.focus();
+    }
+</script>
+</body>
+</html>
