@@ -12,7 +12,7 @@ std::string HTML::generateButtonsHtml(const std::list<std::pair<int, int>>& fram
 	std::string buttonsHtml;
 	for (const std::pair<int, int>& frame : frames) {
 		buttonsHtml += "<button style=\"background-color: #75725B; color: #052327;\" onclick=\"seek(" + std::to_string(frame.first) + ")\">From "
-					   + frameToTimecode(frame.first, m_fps) + " to " + frameToTimecode(frame.second, m_fps) + "</button>\n";
+					   + frameToSubRipTimecode(frame.first, m_fps) + " to " + frameToSubRipTimecode(frame.second, m_fps) + " frame: " + std::to_string(frame.first) + "</button>\n";
 	}
 	return buttonsHtml;
 }

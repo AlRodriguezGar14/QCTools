@@ -42,6 +42,12 @@
         event.preventDefault();
         video.currentTime = (frame + 1) / fps;
         video.focus();
+
+        var buttonText = event.target.textContent;
+        var match = buttonText.match(/From\s+(.*?)\s+to/);
+        if (match) {
+            navigator.clipboard.writeText(match[1]);
+        }
     }
 </script>
 </body>
