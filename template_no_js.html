@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+<head>
+    <title>{{title}}</title>
+    <style>
+        body, html {height: 100%; margin: 0; padding: 0 2%; background-color: #052327; color: #B59E79;}
+        #video {width: 65%;}
+    </style>
+</head>
+<body>
+<h1>{{title}}</h1>
+<video id="video" controls>
+    <source src="{{videoPath}}" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+<p id="currentFrame"></p>
+<p>FPS: {{fps}}</p>
+<!--{{buttons}}-->
+<script src="script.js"></script>
+</body>
+</html>

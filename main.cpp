@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
     if (report.addButton(dft.getDuplicateFrames(), "Duplicate Frames: "))
 		return 1;
 
-	std::cout << "\nReport generated at report.html" << std::endl;
+	std::cout << "\nReport generated" << std::endl;
 
     return 0;
 }
