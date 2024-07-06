@@ -65,11 +65,11 @@ bool checkTextFrame(cv::Mat current) {
 
 void DuplicateFramesTracker::recordDuplicateFrames(const cv::Mat& current, const cv::Mat& previous, const cv::VideoCapture& cap) {
 
-    if (previous.empty())
-        return;
+    if (previous.empty()) return;
 
 	cv::Scalar avgPixelIntensity = cv::mean(current);
-	const int uniqueFrameThreshold = 5;
+	const int uniqueFrameThreshold = round(m_fps / 2);
+	const int uniqueFrameCountThreshold = 2;
 
 	if (checkBlackFrame(avgPixelIntensity)) {
 		m_start = -1;
@@ -86,27 +86,27 @@ void DuplicateFramesTracker::recordDuplicateFrames(const cv::Mat& current, const
 		return;
 	}
 
-    int dupFrame = cap.get(cv::CAP_PROP_POS_FRAMES) - 2;
+    int dupFrame = cap.get(cv::CAP_PROP_POS_FRAMES) - uniqueFrameCountThreshold;
     if (findDuplicates(current, previous)) {
         if (m_start == -1) {
             m_start = dupFrame;
         }
-        uniqueFrameCount = 0;
+		m_uniqueFrameCount = 0;
     } else {
-        uniqueFrameCount++;
+        m_uniqueFrameCount++;
     }
-	if (uniqueFrameCount > uniqueFrameThreshold && m_start != -1) {
-		m_end = dupFrame + 1;
+	if (m_uniqueFrameCount > uniqueFrameThreshold && m_start != -1) {
+		m_end = dupFrame;
 		m_duplicateFrames.push_back(std::make_pair(m_start, m_end));
 		m_start = -1;
-		uniqueFrameCount = 0;
+		m_uniqueFrameCount = 0;
 	}
 }
 
 void DuplicateFramesTracker::printFreezeFrames() {
 	std::cout << "Freeze frames: " << m_freezeFrames.size() << std::endl;
 	for (std::pair<int, int> &frame : m_freezeFrames) {
-		std::cout << "From " << frameToTimecode(frame.first, this->fps) << " to " << frameToTimecode(frame.second, this->fps) << std::endl;
+		std::cout << "From " << frameToTimecode(frame.first, this->m_fps) << " to " << frameToTimecode(frame.second, this->m_fps) << std::endl;
 	}
 }
 

@@ -14,19 +14,19 @@
     Your browser does not support the video tag.
 </video>
 <p id="currentFrame"></p>
-<p>FPS: {{fps}}</p>
+<p>FPS: {{m_fps}}</p>
 <!--{{buttons}}-->
 <script>
     var video = document.getElementById('video');
     var currentFrameElement = document.getElementById('currentFrame');
-    var fps = {{fps}}
+    var m_fps = {{m_fps}}
 
     video.addEventListener('timeupdate', function() {
-        var currentFrame = Math.round(video.currentTime * fps);
+        var currentFrame = Math.round(video.currentTime * m_fps);
         currentFrameElement.textContent = 'Current Frame: ' + currentFrame;
     });
 
-    var frameTime = 1 / fps;
+    var frameTime = 1 / m_fps;
     document.addEventListener('keydown', function(event) {
         switch (event.key) {
             case ',':
@@ -40,7 +40,7 @@
 
     function seek(frame) {
         event.preventDefault();
-        video.currentTime = (frame + 1) / fps;
+        video.currentTime = (frame + 1) / m_fps;
         video.focus();
 
         var buttonText = event.target.textContent;

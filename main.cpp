@@ -2,7 +2,6 @@
 #include <future>
 #include <fstream>
 #include <vector>
-#include <atomic>
 #include <thread>
 #include <memory>
 #include "InactivePixelsTracker.hpp"
@@ -11,7 +10,10 @@
 #include "HTML.hpp"
 #include "ProgressTracker.hpp"
 
-std::tuple<InactivePixelsTracker, DuplicateFramesTracker> processSegment(std::string videoPath, int startFrame, int endFrame, double fps, int threadId, ProgressTracker *progressTracker) {
+typedef std::tuple<InactivePixelsTracker, DuplicateFramesTracker> InactivePixelsAndDuplicateFrames;
+typedef std::future<std::tuple<InactivePixelsTracker, DuplicateFramesTracker>> FutureInactivePixelsAndDuplicateFrames;
+
+InactivePixelsAndDuplicateFrames processSegment(std::string videoPath, int startFrame, int endFrame, double fps, int threadId, ProgressTracker *progressTracker) {
     cv::VideoCapture cap(videoPath);
     cap.set(cv::CAP_PROP_POS_FRAMES, startFrame);
 
@@ -45,8 +47,10 @@ int main(int argc, char **argv) {
 
     std::string videoPath = argv[1];
     cv::VideoCapture cap(videoPath);
-    int totalFrames = cap.get(cv::CAP_PROP_FRAME_COUNT);
+	if (!cap.isOpened()) return 1;
+    double totalFrames = cap.get(cv::CAP_PROP_FRAME_COUNT);
     double fps = cap.get(cv::CAP_PROP_FPS);
+
     std::cout << "fps: " << fps << std::endl;
     std::cout << "title: " << argv[1] << std::endl;
     std::cout << "Processing..." << std::endl;
@@ -59,15 +63,15 @@ int main(int argc, char **argv) {
 
     std::thread progressThread(&ProgressTracker::printProgress, &progressTracker);
 
-    std::vector<std::future<std::tuple<InactivePixelsTracker, DuplicateFramesTracker>>> futures;
+    std::vector<FutureInactivePixelsAndDuplicateFrames> futures;
     for (int i = 0; i < numberOfSegments; ++i) {
         int startFrame = i * totalFrames / numberOfSegments;
         int endFrame = (i + 1) * totalFrames / numberOfSegments;
         futures.push_back(std::async(std::launch::async, processSegment, videoPath, startFrame, endFrame, fps, i, &progressTracker));
     }
 
-    for (std::future<std::tuple<InactivePixelsTracker, DuplicateFramesTracker>> &fut : futures) {
-        std::tuple<InactivePixelsTracker, DuplicateFramesTracker> res = fut.get();
+    for (FutureInactivePixelsAndDuplicateFrames &fut : futures) {
+        InactivePixelsAndDuplicateFrames res = fut.get();
         ipt.appendInactivePixels(std::get<0>(res).getInactivePixels());
         dft.appendDuplicateFrames(std::get<1>(res).getDuplicateFrames());
     }

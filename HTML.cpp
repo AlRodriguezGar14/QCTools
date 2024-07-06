@@ -30,8 +30,11 @@ void HTML::replaceAll(std::string& str, const std::string& from, const std::stri
 std::string HTML::generateButtonsHtml(const std::list<std::pair<int, int>>& frames) {
 	std::string buttonsHtml;
 	for (const std::pair<int, int>& frame : frames) {
-		buttonsHtml += "<button style=\"background-color: #75725B; color: #052327;\" onclick=\"seek(" + std::to_string(frame.first) + ")\">From "
-					   + frameToSubRipTimecode(frame.first, m_fps) + " to " + frameToSubRipTimecode(frame.second, m_fps) + " frame: " + std::to_string(frame.first) + "</button>\n";
+		buttonsHtml += "<button style=\"background-color: #75725B; color: #052327;\" onclick=\"seek("
+				+ std::to_string(frame.first) + ")\">From "
+				+ frameToSubRipTimecode(frame.first, m_fps)
+//				+ " to " + frameToSubRipTimecode(frame.second, m_fps)
+				+ " frame: " + std::to_string(frame.first) + "</button>\n";
 	}
 	return buttonsHtml;
 }
@@ -47,7 +50,7 @@ int HTML::initJS() {
 						   std::istreambuf_iterator<char>());
 	templateFileJs.close();
 
-	replaceAll(jsTemplate, "{{fps}}", std::to_string(m_fps));
+	replaceAll(jsTemplate, "{{m_fps}}", std::to_string(m_fps));
 
 	std::ofstream jsFile(m_directory + "script.js");
 	if (!jsFile.is_open()) {
@@ -83,7 +86,7 @@ int HTML::initHTML() {
 
 	replaceAll(htmlTemplate, "{{title}}", "Analysis Report");
 	replaceAll(htmlTemplate, "{{videoPath}}", m_videoPath);
-	replaceAll(htmlTemplate, "{{fps}}", std::to_string(m_fps));
+	replaceAll(htmlTemplate, "{{m_fps}}", std::to_string(m_fps));
 
 	std::ofstream htmlFile(m_file);
 	if (!htmlFile.is_open()) {
