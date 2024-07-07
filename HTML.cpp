@@ -84,7 +84,7 @@ int HTML::initHTML() {
 							 std::istreambuf_iterator<char>());
 	templateFileHtml.close();
 
-	replaceAll(htmlTemplate, "{{title}}", "Analysis Report");
+	replaceAll(htmlTemplate, "{{title}}", extractFileNAme(m_videoPath) + " report");
 	replaceAll(htmlTemplate, "{{videoPath}}", m_videoPath);
 	replaceAll(htmlTemplate, "{{m_fps}}", std::to_string(m_fps));
 
@@ -120,7 +120,7 @@ int HTML::addButton(const std::list<std::pair<int, int>>& frames, const std::str
 
 	size_t pos = htmlContent.find("<!--{{buttons}}-->");
 	if (pos != std::string::npos) {
-		htmlContent.append("<h3>" + message + std::to_string(frames.size()) + "</h3>\n" + buttonsHtml);
+		htmlContent.insert(pos, "<h3>" + message + std::to_string(frames.size()) + ":</h3>\n" + buttonsHtml);
 	}
 
 	std::ofstream htmlFileOut(m_file);

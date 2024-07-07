@@ -3,12 +3,59 @@
 <head>
     <title>{{title}}</title>
     <style>
-        body, html {height: 100%; margin: 0; padding: 0 2%; background-color: #052327; color: #B59E79;}
-        #video {width: 65vw;}
-        .progress {margin-top: 0.5em; margin-bottom: 0.5em; width: 100%; height: 10px; background-color: #B59E79;}
-        .progress-bar {width: 0; height: 100%; background-color: #468585;}
-        .video-container {display: flex; align-items: flex-start;}
-        .info-wrapper {margin-left: 2em; display: flex; flex-direction: column; justify-content: end;}
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0 2%;
+            background-color: #052327;
+            color: #B59E79;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #video {
+            width: 65vw;
+            max-width: 100%;
+        }
+
+        .progress {
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+            width: 100%;
+            height: 10px;
+            background-color: #B59E79;
+        }
+
+        .progress-bar {
+            width: 0;
+            height: 100%;
+            background-color: #468585;
+        }
+
+        .video-container {
+            display: flex;
+            align-items: flex-start;
+            flex-shrink: 0;
+        }
+
+        .info-wrapper {
+            margin-left: 2em;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            overflow-y: scroll;
+            max-height: 50vh;
+            /* flex-grow: 1; */
+
+        }
+
+        .line {
+            border-top: 1px dotted #B59E79;
+        }
+
+        body > * {
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body>
@@ -24,20 +71,22 @@
                 <div class="progress-bar"></div>
             </div>
             <button id="play">Toggle Play</button>
+            <p>FPS: {{m_fps}}</p>
+            <p id="play-speed">Playing speed</p>
+            <p id="currentFrame"></p>
         </div>
     </div>
     <div class="info-wrapper">
-        <p id="play-speed">Playing speed</p>
-        <p id="currentFrame"></p>
-        <p>FPS: {{m_fps}}</p>
+        <!--{{buttons}}-->
     </div>
 </div>
-<!--{{buttons}}-->
+<hr class="line">
 <p>Controls:</p>
-<p>Press "k" or "space" to start/stop the video.</p>
+<p>Press "k" to start/stop the video.</p>
 <p>Press "h" to go back.</p>
 <p>Press "l" to go forward faster or "j" to go back slower</p>
 <p>Press "," to navigate one frame backward and "." to navigate one frame forward</p>
+<p>After clicking on a button, press space to replay at the button timecode</p>
 <script src="script.js"></script>
 </body>
 </html>
