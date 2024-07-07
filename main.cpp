@@ -83,9 +83,9 @@ int main(int argc, char **argv) {
     dft.mergeFrameRanges();
     if (report.initHTML())
 		return 1;
-    if (report.addButton(ipt.getInactivePixels(), "Inactive Pixels: "))
+    if (report.addButton(ipt.getInactivePixels(), "Inactive Pixels: ", "ipf"))
 		return 1;
-    if (report.addButton(dft.getDuplicateFrames(), "Duplicate Frames: "))
+    if (report.addButton(dft.getDuplicateFrames(), "Duplicate Frames: ", "dpf"))
 		return 1;
 
 	std::cout << "\nReport generated" << std::endl;

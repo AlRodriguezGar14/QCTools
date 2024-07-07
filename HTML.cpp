@@ -27,10 +27,12 @@ void HTML::replaceAll(std::string& str, const std::string& from, const std::stri
 	}
 }
 
-std::string HTML::generateButtonsHtml(const std::list<std::pair<int, int>>& frames) {
+std::string HTML::generateButtonsHtml(const std::list<std::pair<int, int>>& frames, const std::string& buttonClass) {
 	std::string buttonsHtml;
 	for (const std::pair<int, int>& frame : frames) {
-		buttonsHtml += "<button style=\"background-color: #75725B; color: #052327;\" onclick=\"seek("
+		buttonsHtml += "<button class=\""
+				+ buttonClass
+				+ "\" style=\"background-color: #75725B; color: #052327;\" onclick=\"seek("
 				+ std::to_string(frame.first) + ")\">From "
 				+ frameToSubRipTimecode(frame.first, m_fps)
 //				+ " to " + frameToSubRipTimecode(frame.second, m_fps)
@@ -105,7 +107,7 @@ int HTML::initHTML() {
 	return 0;
 }
 
-int HTML::addButton(const std::list<std::pair<int, int>>& frames, const std::string& message) {
+int HTML::addButton(const std::list<std::pair<int, int>>& frames, const std::string& message, const std::string& buttonClass) {
 	std::ifstream htmlFileIn(m_file);
 	if (!htmlFileIn.is_open()) {
 		std::cout << "Failed to open " << m_file << std::endl;
@@ -116,7 +118,7 @@ int HTML::addButton(const std::list<std::pair<int, int>>& frames, const std::str
 							std::istreambuf_iterator<char>());
 	htmlFileIn.close();
 
-	std::string buttonsHtml = generateButtonsHtml(frames);
+	std::string buttonsHtml = generateButtonsHtml(frames, buttonClass);
 
 	size_t pos = htmlContent.find("<!--{{buttons}}-->");
 	if (pos != std::string::npos) {

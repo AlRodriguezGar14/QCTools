@@ -12,7 +12,7 @@ class HTML : public Converter {
 public:
 	HTML(std::string file, std::string videoPath, double fps);
 	int initHTML();
-	int addButton(const std::list<std::pair<int, int>>& frames, const std::string& message);
+	int addButton(const std::list<std::pair<int, int>>& frames, const std::string& message, const std::string& buttonClass);
 
 private:
 	std::string extractFileNAme(const std::string& path);
@@ -23,7 +23,7 @@ private:
 
 	int initJS();
 	void replaceAll(std::string& str, const std::string& from, const std::string& to);
-	std::string generateButtonsHtml(const std::list<std::pair<int, int>>& frames);
+	std::string generateButtonsHtml(const std::list<std::pair<int, int>>& frames, const std::string& buttonClass);
 };
 
 #endif
