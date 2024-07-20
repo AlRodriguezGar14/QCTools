@@ -2,6 +2,7 @@
 <html style="height: 100%;">
 <head>
     <title>{{title}}</title>
+    <script src="script.js" defer></script>
     <style>
         html, body {
             height: 100%;
@@ -84,12 +85,17 @@
                 <div id="errors-bar"></div>
             </div>
             <div class="status-bar">
-                <button id="play" style="background-color: #AF8260">Toggle Play</button>
-                <button id="last90" style="background-color: #AF8260">99%</button>
                 <p>FPS: {{m_fps}}</p>
                 <p id="play-speed">Playing speed</p>
                 <p id="currentFrame"></p>
+                <p id="currentTimecode"></p>
             </div>
+        </div>
+        <div class="utilities">
+            <button id="play" style="background-color: #AF8260">Toggle Play</button>
+            <button id="last90" style="background-color: #AF8260">99%</button>
+            <button id="get-timecode" style="background-color: #AF8260">Get Timecode</button>
+            <button id="get-fcpx-timecode" style="background-color: #AF8260">Get FCPX Timecode</button>
         </div>
     </div>
     <div class="info-wrapper">
@@ -102,6 +108,5 @@
 <p>Press "l" to go forward faster or "j" to go back slower</p>
 <p>Press "," to navigate one frame backward and "." to navigate one frame forward</p>
 <p>After clicking on a button, press space to replay at the button timecode</p>
-<script src="script.js"></script>
 </body>
 </html>
