@@ -1,0 +1,9 @@
+# ninja log v6
+3	523	1721129937758074358	CMakeFiles/qctool.dir/ProgressTracker.cpp.o	7aa7d12aecdc1ed8
+2	427	1721129937757544819	CMakeFiles/qctool.dir/converter.cpp.o	79eac2fa7afc8b0d
+1119	1169	1721129938874087716	qctool	d237addf1027cc01
+2	981	1721129937757289195	CMakeFiles/qctool.dir/duplicateFramesTracker.cpp.o	4fe2e3e23ed91cd3
+2	1014	1721129937757133945	CMakeFiles/qctool.dir/InactivePixelsTracker.cpp.o	6cd071e837a5d883
+3	565	1721129937757923275	CMakeFiles/qctool.dir/HTML.cpp.o	8b1d7def307247e8
+2	479	1721129937757754818	CMakeFiles/qctool.dir/FramesTracker.cpp.o	e83849dbc5daf9a5
+1	1119	1721129937756822488	CMakeFiles/qctool.dir/main.cpp.o	6c719f79f0511647
