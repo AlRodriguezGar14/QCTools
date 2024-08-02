@@ -8,7 +8,8 @@ Makefile
 CMakeFiles/
 cmake-build-debug/
 CMakeCache.txt
-CMakeLists.txt
 cmake_install.cmake
 
 report_6151-9e78_hollywood_hoax/
+
+build/
