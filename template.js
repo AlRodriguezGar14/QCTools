@@ -1,3 +1,7 @@
+const CONSTANTS = Object.freeze({
+  CYAN: [80, 140, 155],
+})
+
 window.addEventListener("DOMContentLoaded", () => {
     let video = document.getElementById('video');
     let playBtn = document.getElementById('play');
@@ -96,7 +100,10 @@ window.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         video.currentTime = (frame + 1) / fps;
         video.focus();
-
+        if (!event.target.dataset.colorChanged) {
+        event.target.style.backgroundColor = "rgb(" + CONSTANTS.CYAN.join() + ")"
+        event.target.dataset.colorChanged = true
+        }
         let buttonText = event.target.textContent;
         let match = buttonText.match(/From\s+(.*?)\s+frame/);
         if (match) {
