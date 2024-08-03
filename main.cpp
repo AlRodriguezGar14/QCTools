@@ -80,6 +80,8 @@ void updateHTMLTemplate(const std::string& templatePath, const std::string& outp
 }
 // }
 
+// TODO: Build a parser class:
+// {
 std::string removePath(const std::string& path) {
 	size_t lastSlash = path.find_last_of('/');
 	if (lastSlash == std::string::npos) {
@@ -87,19 +89,26 @@ std::string removePath(const std::string& path) {
 	}
 	return path.substr(lastSlash + 1, path.length());
 }
+std::string processPath(const std::string& path) {
+    std::filesystem::path fsPath(path);
+    std::cout << "fsPath: " << fsPath << std::endl;
+    exit (1);
+    if (path.find("./") != std::string::npos || path.find("/") == std::string::npos) {
+        return std::filesystem::absolute(fsPath).string();
+    }
+    return fsPath.string();
+}
+//}
 
 int main(int argc, char **argv) {
     if (argc != 2) {
         std::cout << "Usage: ./qctool <Video_Path>" << std::endl;
         return 1;
     }
-    std::string videoPath = argv[1];
+    std::string videoPath = processPath(argv[1]);
     if (videoPath.empty()) {
         std::cerr << "Invalid video path" << std::endl;
         return 1;
-    }
-    if (videoPath.find("./") != std::string::npos || videoPath.find("/") == std::string::npos) {
-        videoPath = std::filesystem::absolute(removePath(videoPath));
     }
     if (!std::filesystem::exists(videoPath)) {
         std::cerr << "Video file does not exist: " << videoPath << std::endl;
