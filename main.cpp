@@ -6,6 +6,7 @@
 #include <memory>
 #include <iostream>
 #include <cstdlib>
+#include <filesystem>
 #include "InactivePixelsTracker.hpp"
 #include "duplicateFramesTracker.hpp"
 #include "Converter.hpp"
@@ -79,13 +80,31 @@ void updateHTMLTemplate(const std::string& templatePath, const std::string& outp
 }
 // }
 
+std::string removePath(const std::string& path) {
+	size_t lastSlash = path.find_last_of('/');
+	if (lastSlash == std::string::npos) {
+		lastSlash = -1;
+	}
+	return path.substr(lastSlash + 1, path.length() - 1);
+}
+
 int main(int argc, char **argv) {
     if (argc != 2) {
         std::cout << "Usage: ./qctool <Video_Path>" << std::endl;
         return 1;
     }
-
     std::string videoPath = argv[1];
+    if (videoPath.empty()) {
+        std::cerr << "Invalid video path" << std::endl;
+        return 1;
+    }
+    if (videoPath.find("./") != std::string::npos) {
+        videoPath = std::filesystem::absolute(removePath(videoPath));
+    }
+    if (!std::filesystem::exists(videoPath)) {
+        std::cerr << "Video file does not exist" << std::endl;
+        return 1;
+    }
     cv::VideoCapture cap(videoPath);
 	if (!cap.isOpened()) return 1;
     double totalFrames = cap.get(cv::CAP_PROP_FRAME_COUNT);
