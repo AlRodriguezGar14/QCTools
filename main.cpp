@@ -85,7 +85,7 @@ std::string removePath(const std::string& path) {
 	if (lastSlash == std::string::npos) {
 		lastSlash = -1;
 	}
-	return path.substr(lastSlash + 1, path.length() - 1);
+	return path.substr(lastSlash + 1, path.length());
 }
 
 int main(int argc, char **argv) {
@@ -98,11 +98,11 @@ int main(int argc, char **argv) {
         std::cerr << "Invalid video path" << std::endl;
         return 1;
     }
-    if (videoPath.find("./") != std::string::npos) {
+    if (videoPath.find("./") != std::string::npos || videoPath.find("/") == std::string::npos) {
         videoPath = std::filesystem::absolute(removePath(videoPath));
     }
     if (!std::filesystem::exists(videoPath)) {
-        std::cerr << "Video file does not exist" << std::endl;
+        std::cerr << "Video file does not exist: " << videoPath << std::endl;
         return 1;
     }
     cv::VideoCapture cap(videoPath);
@@ -111,7 +111,8 @@ int main(int argc, char **argv) {
     double fps = cap.get(cv::CAP_PROP_FPS);
 
     std::cout << "fps: " << fps << std::endl;
-    std::cout << "title: " << argv[1] << std::endl;
+    std::cout << "title: " << removePath(videoPath) << std::endl;
+    std::cout << "path: " << videoPath << std::endl;
     std::cout << "Processing..." << std::endl;
 
     DuplicateFramesTracker dft(fps);
