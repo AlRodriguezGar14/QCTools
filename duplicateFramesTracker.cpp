@@ -103,13 +103,6 @@ void DuplicateFramesTracker::recordDuplicateFrames(const cv::Mat& current, const
 	}
 }
 
-void DuplicateFramesTracker::printFreezeFrames() {
-	std::cout << "Freeze frames: " << m_freezeFrames.size() << std::endl;
-	for (std::pair<int, int> &frame : m_freezeFrames) {
-		std::cout << "From " << frameToTimecode(frame.first, this->m_fps) << " to " << frameToTimecode(frame.second, this->m_fps) << std::endl;
-	}
-}
-
 void	DuplicateFramesTracker::appendDuplicateFrames(std::list<std::pair<int, int>> dpfs) {
 	this->m_duplicateFrames.insert(this->m_duplicateFrames.end(), dpfs.begin(), dpfs.end());
 }

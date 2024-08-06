@@ -42,44 +42,6 @@ InactivePixelsAndDuplicateFrames processSegment(std::string videoPath, int start
     return std::make_tuple(ipt, dft);
 }
 
-// TODO: Refactor and integrate in the HTML class once it is working
-// {
-void generateWaveform(const std::string& videoPath, const std::string& outputImagePath) {
-    std::string command = "ffmpeg -i " + videoPath + " -filter_complex "
-                          "\"[0:a]aformat=channel_layouts=mono, "
-                          "showwavespic=s=1920x240:colors=white\" "
-                          "-frames:v 1 " + outputImagePath;
-    int result = std::system(command.c_str());
-    if (result != 0) {
-        std::cerr << "Error generating waveform: FFmpeg command failed." << std::endl;
-    } else {
-        std::cout << "Waveform generated successfully." << std::endl;
-    }
-}
-
-void updateHTMLTemplate(const std::string& templatePath, const std::string& outputPath) {
-    std::ifstream templateFile(templatePath);
-    if (!templateFile.is_open()) {
-        std::cerr << "Failed to open template file" << std::endl;
-        return;
-    }
-    std::ofstream outputFile(outputPath);
-    if (!outputFile.is_open()) {
-        std::cerr << "Failed to open output file" << std::endl;
-        return;
-    }
-
-    std::string line;
-    while (std::getline(templateFile, line)) {
-        size_t pos;
-        while ((pos = line.find("{{waveformImagePath}}")) != std::string::npos) {
-            std::string replacable = "{{waveformImagePath}}";
-            line.replace(pos, replacable.length(), "waveform.png");
-        }
-    }
-}
-// }
-
 // TODO: Build a parser class:
 // {
 std::string removePath(const std::string& path) {
@@ -91,8 +53,6 @@ std::string removePath(const std::string& path) {
 }
 std::string processPath(const std::string& path) {
     std::filesystem::path fsPath(path);
-    std::cout << "fsPath: " << fsPath << std::endl;
-    exit (1);
     if (path.find("./") != std::string::npos || path.find("/") == std::string::npos) {
         return std::filesystem::absolute(fsPath).string();
     }
@@ -156,16 +116,11 @@ int main(int argc, char **argv) {
 		return 1;
     if (report.addButton(dft.getDuplicateFrames(), "Duplicate Frames: ", "dpf"))
 		return 1;
-    
-    // TODO, refactor everything after it is working:
-    // Integrate it within the HTML class
-    //{
-    // std::string templatePath = "template_no_js.html";
-    // std::string outputPath = "report_" + report.extractFileNAme(videoPath) + "/report.html";
-    generateWaveform(videoPath, "report_" + report.extractFileNAme(videoPath) + "/waveform.png");
-    //}
+    if (report.generateWaveform("waveform.png"))
+        return 1;
 
 	std::cout << "\nReport generated" << std::endl;
+    report.openReport();
 
     return 0;
 }
