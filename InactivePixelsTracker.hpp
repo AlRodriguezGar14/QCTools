@@ -22,8 +22,8 @@ public:
 
 private:
 	std::list<std::pair<int, int>> m_inactivePixels;
-	bool hasInactiveSide(const cv::Mat &gray, Side side, int threshold = 0);
-	bool hasInactivePixels(const cv::Mat &frame, int threshold = 3, int innerThreshold = 30);
+	bool hasInactiveSide(const cv::Mat &gray, Side side, int threshold);
+	bool hasInactivePixels(const cv::Mat &frame, int threshold, int innerThreshold);
 };
 
 #endif

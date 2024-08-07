@@ -102,7 +102,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function seek(event, frame) {
     event.preventDefault()
-    video.currentTime = (frame + 1) / fps
+    video.currentTime = frame / fps
     video.focus()
     if (!event.target.dataset.colorChanged) {
       event.target.style.backgroundColor = "rgb(" + CONSTANTS.CYAN.join() + ")"
